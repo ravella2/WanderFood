@@ -23,6 +23,7 @@ class City extends Component {
         return (
             <MapView
             style={{flex: 1, marginBottom: 150}}
+            provider='google'
             region={this.state.region}
             onRegionChange={this.onRegionChange} 
             />
