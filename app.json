@@ -26,7 +26,6 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.ga.wanderfood",
       "config": {
-        "googleMapsApiKey": "AIzaSyD-LVVORS4U4o2fKm5yTm9SULRn3E72yXo"
       }
     }
   }
