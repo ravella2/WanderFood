@@ -28,7 +28,7 @@ export default class HomeScreen extends React.Component {
           <Card.Content>
               <Title style={styles.headings}>Los Angeles</Title>
               <Paragraph>Say goodbye to these, because it's the last time! Not tricks, Michael, illusions. No… but I'd like to be asked! Did you enjoy your meal, Mom? You drank it fast enough. No, I did not kill Kitty. However, I am going to oblige and answer the nice officer's questions because I am an honest man with no secrets to hide.</Paragraph>
-              <Card.Actions style={styles.button}><Button mode="contained">Find Delicious Food</Button></Card.Actions>
+              <Card.Actions style={styles.button}><Button mode="contained" onPress={() => this.props.navigation.navigate('City')}>Find Delicious Food</Button></Card.Actions>
           </Card.Content>
       </Card>
       <Card style={styles.card}>
