@@ -33,7 +33,7 @@ class RestaurantList extends Component {
             restaurants.push({
                 key: doc.id,
                 doc,
-                name
+                name,
             });
         });
 

@@ -1,56 +1,63 @@
 import React from 'react';
-import { Card, Title, Paragraph, Button} from 'react-native-paper';
-import { StyleSheet, ScrollView } from 'react-native';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { StyleSheet, ScrollView, Text } from 'react-native';
+import firebase from '../Firebase';
+import { Card, Button } from 'react-native-elements';
 
-const theme = {
-  ...DefaultTheme,
-  roundness: 2,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: '#3498db',
-    accent: '#f1c40f',
-  }
-};
 
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
+    constructor() {
+        super();
+        this.ref = firebase.firestore().collection('Cities');
+        this.unsubscribe = null;
 
-  render() {
-    return (
-      <PaperProvider theme={theme}>
-      <ScrollView>
-      <Card style={styles.card}>
-          <Card.Cover source={require('../assets/images/la.jpeg')} />
-          <Card.Content>
-              <Title style={styles.headings}>Los Angeles</Title>
-              <Paragraph>Say goodbye to these, because it's the last time! Not tricks, Michael, illusions. No… but I'd like to be asked! Did you enjoy your meal, Mom? You drank it fast enough. No, I did not kill Kitty. However, I am going to oblige and answer the nice officer's questions because I am an honest man with no secrets to hide.</Paragraph>
-              <Card.Actions style={styles.button}><Button mode="contained" onPress={() => this.props.navigation.navigate('City')}>Find Delicious Food</Button></Card.Actions>
-          </Card.Content>
-      </Card>
-      <Card style={styles.card}>
-          <Card.Cover source={require('../assets/images/sf.jpeg')} />
-          <Card.Content>
-              <Title style={styles.headings}>San Francisco</Title>
-              <Paragraph>Say goodbye to these, because it's the last time! Not tricks, Michael, illusions. No… but I'd like to be asked! Did you enjoy your meal, Mom? You drank it fast enough. No, I did not kill Kitty. However, I am going to oblige and answer the nice officer's questions because I am an honest man with no secrets to hide.</Paragraph>
-              <Card.Actions style={styles.button}><Button mode="contained">Find Delcious Food</Button></Card.Actions>
-          </Card.Content>
-      </Card>
-      <Card style={styles.card}>
-          <Card.Cover source={require('../assets/images/ny.jpg')} />
-          <Card.Content>
-              <Title style={styles.headings}>New York</Title>
-              <Paragraph>Say goodbye to these, because it's the last time! Not tricks, Michael, illusions. No… but I'd like to be asked! Did you enjoy your meal, Mom? You drank it fast enough. No, I did not kill Kitty. However, I am going to oblige and answer the nice officer's questions because I am an honest man with no secrets to hide.</Paragraph>
-              <Card.Actions style={styles.button}><Button mode="contained">Find Delicious Food</Button></Card.Actions>
-          </Card.Content>
-      </Card>
-  </ScrollView>
-  </PaperProvider>
-    );
-  }
+        this.state = {
+            loading: true,
+            cities: []
+        };
+    }
+
+    componentDidMount() {
+        this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    }
+
+    onCollectionUpdate = (querySnapshot) => {
+        const cities = [];
+        querySnapshot.forEach((doc) => {
+            const { name, description } = doc.data();
+            cities.push({
+            key: doc.id,
+            doc, 
+            name,
+            description
+            });
+        });
+        this.setState({
+            cities,
+            isLoading: false,
+        });
+    }
+
+    static navigationOptions = {
+        header: null,
+    };
+
+
+    render() {
+        return (
+            <ScrollView>
+            {this.state.cities.map((item, i) => (
+                    <Card key={i} title={item.name} image={require('../assets/images/la.jpeg')}>
+                        <Text style={{marginBottom: 10}}>{item.description}</Text>
+                        <Button
+                            onPress={() => this.props.navigation.navigate('City')}
+                            backgroundColor='#03A9F4'
+                            title='Find the best local dish' />
+                    </Card> 
+                ))}
+            </ScrollView>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
