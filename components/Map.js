@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import MapView from 'react-native-maps'
-import { Text } from 'react-native'
 
 class Maps extends Component {
     constructor(props) {

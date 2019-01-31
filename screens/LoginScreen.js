@@ -46,7 +46,7 @@ export default class Login extends React.Component {
 
         const{email, password} = this.state;
         firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(() => {
+        .then((user) => {
             this.setState({
                 error: '',
                 loading: false
@@ -56,7 +56,7 @@ export default class Login extends React.Component {
 
         .catch(() => {
             this.setState({
-                error: 'Authentication Failed',
+                error: 'User already exists',
                 loading: false
             })
         })        
@@ -68,13 +68,14 @@ export default class Login extends React.Component {
         }
         return <View>
             <Button onPress={this.onLoginPress.bind(this)} title="Login" />
-            <Button color="red" onPress={this.onSignUpPress.bind(this)} title="Sign Up" />
+            <Button onPress={this.onSignUpPress.bind(this)} title="Sign Up" />
         </View>
     }
 
     render() {
         return (
             <View style={styles.form}>
+                <Text style={styles.title}>WanderFood</Text>
                 <FormLabel>Email</FormLabel>
                 <FormInput 
                     value={this.state.email} 
@@ -98,4 +99,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
     },
+    title: {
+        textAlign: 'center',
+        marginTop: 50,
+        marginBottom: 50,
+        fontSize: 30
+    }
 })

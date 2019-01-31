@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Text } from 'react-native';
+import { StyleSheet, ScrollView, Text, View } from 'react-native';
 import firebase from '../Firebase';
-import { Card, Button } from 'react-native-elements';
+import { Card, Button, Header } from 'react-native-elements';
 
 
 
@@ -12,24 +12,29 @@ export default class HomeScreen extends React.Component {
         this.unsubscribe = null;
 
         this.state = {
+            currentUser: null,
             loading: true,
             cities: []
         };
     }
 
     componentDidMount() {
+        const { currentUser } = firebase.auth()
+        this.setState({ currentUser })
         this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
     }
 
     onCollectionUpdate = (querySnapshot) => {
         const cities = [];
         querySnapshot.forEach((doc) => {
-            const { name, description } = doc.data();
+            const { name, description, latitude, longitude} = doc.data();
             cities.push({
             key: doc.id,
             doc, 
             name,
-            description
+            description,
+            latitude,
+            longitude
             });
         });
         this.setState({
@@ -44,18 +49,22 @@ export default class HomeScreen extends React.Component {
 
 
     render() {
+        const { currentUser } = this.state
         return (
-            <ScrollView>
+            <View>
+            <Header centerComponent={{text: 'WanderFood'}} />
+            <ScrollView contentContainerStyle={{paddingBottom: 90}}>
             {this.state.cities.map((item, i) => (
                     <Card key={i} title={item.name} image={require('../assets/images/la.jpeg')}>
                         <Text style={{marginBottom: 10}}>{item.description}</Text>
                         <Button
                             onPress={() => this.props.navigation.navigate('City')}
-                            backgroundColor='#03A9F4'
+                            backgroundColor='#4267B2'
                             title='Find the best local dish' />
                     </Card> 
                 ))}
             </ScrollView>
+            </View>
         );
     }
 }
