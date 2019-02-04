@@ -26,8 +26,8 @@ export default class ProfileScreen extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <Image source={require('../assets/images/user1.png')} style={styles.image} />
-        <Text>User: {currentUser && currentUser.email}!</Text>
-        <Text>Posts Go Here</Text>
+        <Text style={styles.headings}>User: {currentUser && currentUser.email}!</Text>
+        <Text style={styles.headings}>Posts Go Here</Text>
 
       </ScrollView>
     );
@@ -44,5 +44,8 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginLeft: 100
+  },
+  headings: {
+    fontSize:20
   }
 });

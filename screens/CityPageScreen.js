@@ -81,12 +81,9 @@ class CityPage extends Component {
         this.setState(
         prevState => {
             let restaurants = prevState.restaurants.slice();
-    
             restaurants.splice(i, 1);
-    
             return { restaurants: restaurants };
         },
-        //   () => restaurants.save(this.state.restaurants)
         );
     };
 
