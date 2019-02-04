@@ -26,7 +26,8 @@ export default class ProfileScreen extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <Image source={require('../assets/images/user1.png')} style={styles.image} />
-        <Text>Hi {currentUser && currentUser.email}!</Text>
+        <Text>User: {currentUser && currentUser.email}!</Text>
+        <Text>Posts Go Here</Text>
 
       </ScrollView>
     );

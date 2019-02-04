@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Button, Text, StyleSheet} from 'react-native';
+import {View, Button, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import firebase from '../Firebase';
 import { FormLabel, FormInput } from 'react-native-elements'
+import { functions } from 'firebase';
 
 export default class Login extends React.Component {
     constructor(props){
@@ -46,7 +47,28 @@ export default class Login extends React.Component {
 
         const{email, password} = this.state;
         firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((user) => {
+        .then((newUser) => {
+            functions.auth.user().onCreate((user) => {
+                firebase.firestore().collection('Users').doc(newUser.uid).set({
+                    email: user.email,
+                    posts: []
+                })
+            })
+        })
+        .then(() => {
+            // firebase.firestore().collection('Users').doc(user.uid).add({
+            //     email: user.email,
+            //     posts: []
+            // })
+            // functions.auth.user().onCreate((user) => {
+            //     console.log("hi")
+
+            //     const account = {
+            //         posts: [],
+            //         email: user.email
+            //     }
+            //     return firebase.firestore().collection("Users").doc(user.uid).set(account)
+            // })
             this.setState({
                 error: '',
                 loading: false
@@ -74,7 +96,7 @@ export default class Login extends React.Component {
 
     render() {
         return (
-            <View style={styles.form}>
+            <KeyboardAvoidingView style={styles.form} behavior="padding">
                 <Text style={styles.title}>WanderFood</Text>
                 <FormLabel>Email</FormLabel>
                 <FormInput 
@@ -89,7 +111,7 @@ export default class Login extends React.Component {
                     onChangeText={password => this.setState({ password })} />
                     <Text>{this.state.error}</Text>
                     {this.renderButtonOrLoading()}
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }

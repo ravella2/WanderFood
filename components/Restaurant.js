@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button, TouchableOpacity } from 'react-native';
+
 
 export default class Restaurant extends React.PureComponent {
 
@@ -7,7 +8,7 @@ export default class Restaurant extends React.PureComponent {
         return (
             <View style={{ flex: 1, height: 48, flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ flex: 8 }}>
-                    <Text>{this.props.name}</Text>
+                    <Text style={{textAlign:'justify'}}>{this.props.name}</Text>
                 </View>
             </View>
         );

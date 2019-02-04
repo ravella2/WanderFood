@@ -27,14 +27,15 @@ export default class HomeScreen extends React.Component {
     onCollectionUpdate = (querySnapshot) => {
         const cities = [];
         querySnapshot.forEach((doc) => {
-            const { name, description, latitude, longitude} = doc.data();
+            const { name, description, latitude, longitude, restaurants} = doc.data();
             cities.push({
             key: doc.id,
             doc, 
             name,
             description,
             latitude,
-            longitude
+            longitude,
+            restaurants
             });
         });
         this.setState({
@@ -49,7 +50,6 @@ export default class HomeScreen extends React.Component {
 
 
     render() {
-        const { currentUser } = this.state
         return (
             <View>
             <Header centerComponent={{text: 'WanderFood'}} />
@@ -58,7 +58,7 @@ export default class HomeScreen extends React.Component {
                     <Card key={i} title={item.name} image={require('../assets/images/la.jpeg')}>
                         <Text style={{marginBottom: 10}}>{item.description}</Text>
                         <Button
-                            onPress={() => this.props.navigation.navigate('City')}
+                            onPress={() => this.props.navigation.navigate('City', {latitude: item.latitude, longitude: item.longitude})}
                             backgroundColor='#4267B2'
                             title='Find the best local dish' />
                     </Card> 
